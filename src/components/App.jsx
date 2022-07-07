@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import useLocalStorage from '../hooks/useLocalStorage';
 import Section from './Section';
 import FormAddContact from './FormAddContact';
 import ContactsList from './ContactsList';
 import FilterInput from './FilterInput';
 
 export default function App() {
-  const [contacts, setContacts] = useState([]);
+  const [contacts, setContacts] = useLocalStorage('contacts', []);
   const [filter, setFilter] = useState('');
 
   const checkContact = (contactObj, reset) => {
@@ -42,19 +43,6 @@ export default function App() {
   const onContactDelete = id => {
     setContacts(prevState => prevState.filter(contact => contact.id !== id));
   };
-
-  useEffect(() => {
-    const contactsFromLS = localStorage.getItem('contacts');
-    const parsedContacts = JSON.parse(contactsFromLS);
-
-    if (parsedContacts) {
-      setContacts(parsedContacts);
-    }
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem('contacts', JSON.stringify(contacts));
-  }, [contacts]);
 
   const filteredContacts = filterContacts();
 
