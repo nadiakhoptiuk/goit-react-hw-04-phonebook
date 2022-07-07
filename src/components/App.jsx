@@ -45,7 +45,6 @@ export default function App() {
 
   useEffect(() => {
     const contactsFromLS = localStorage.getItem('contacts');
-    console.log(contactsFromLS);
     const parsedContacts = JSON.parse(contactsFromLS);
 
     if (parsedContacts) {

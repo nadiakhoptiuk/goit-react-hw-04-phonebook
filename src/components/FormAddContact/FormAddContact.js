@@ -1,29 +1,22 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { FaUserPlus } from 'react-icons/fa';
 import { nanoid } from 'nanoid';
+import useFormFields from 'hooks/useFormFields';
+
 import s from './FormAddContact.module.css';
 
 export default function FormAddContact({ onSubmitForm }) {
-  const [name, setName] = useState('');
-  const [number, setNumber] = useState('');
-
-  const handleChange = ({ target: { name, value } }) => {
-    switch (name) {
-      case 'name':
-        setName(value);
-        console.log('name', value);
-        break;
-
-      case 'number':
-        setNumber(value);
-        console.log('number', value);
-        break;
-
-      default:
-        return;
-    }
-  };
+  const {
+    state: name,
+    setState: setName,
+    handleChange: handleNameChange,
+  } = useFormFields('');
+  const {
+    state: number,
+    setState: setNumber,
+    handleChange: handleNumberChange,
+  } = useFormFields('');
 
   const handleSubmit = evt => {
     evt.preventDefault();
@@ -45,7 +38,7 @@ export default function FormAddContact({ onSubmitForm }) {
           type="text"
           name="name"
           value={name}
-          onChange={handleChange}
+          onChange={handleNameChange}
           pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
           title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
           required
@@ -58,7 +51,7 @@ export default function FormAddContact({ onSubmitForm }) {
           type="tel"
           name="number"
           value={number}
-          onChange={handleChange}
+          onChange={handleNumberChange}
           pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
           title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
           required
